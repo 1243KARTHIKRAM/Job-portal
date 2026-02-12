@@ -7,7 +7,7 @@ const Profile = () => {
     name: 'ABCD',
     email: 'ABCD1243@gmail.com',
     role: 'Job Seeker',
-    gender: 'Female',
+    gender: 'Male',
     phoneNo: '123456789',
     profilePhoto: profile, // Use a placeholder image or an actual photo URL
   };
