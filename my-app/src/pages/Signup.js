@@ -27,49 +27,49 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({});
-    setSuccessMessage("");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErrors({});
+  setSuccessMessage("");
 
-    // Validation
-    const newErrors = {};
-    if (!formData.username) newErrors.username = "Username is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
+  const newErrors = {};
+  if (!formData.username) newErrors.username = "Username is required";
+  if (!formData.email) newErrors.email = "Email is required";
+  if (!formData.password) newErrors.password = "Password is required";
+  if (formData.password !== formData.confirmPassword)
+    newErrors.confirmPassword = "Passwords do not match";
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
 
-    // API Call
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/sign/signup",
-        {
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-      setSuccessMessage(response.data.message);
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-      setPasswordStrength("");
-    } catch (error) {
-      setErrors({
-        apiError:
-          error.response?.data?.message || "An error occurred. Please try again.",
-      });
-    }
-  };
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/sign/signup`,
+      {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      }
+    );
+
+    setSuccessMessage(response.data.message);
+    setFormData({
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setPasswordStrength("");
+  } catch (error) {
+    setErrors({
+      apiError:
+        error.response?.data?.message ||
+        "An error occurred. Please try again.",
+    });
+  }
+};
 
   return (
     <div

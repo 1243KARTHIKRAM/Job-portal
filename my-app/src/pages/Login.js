@@ -14,22 +14,27 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5000/api/sign/signin", formData);
-      alert(response.data.message);
-      navigate("/home"); // Redirect to Homepage on success
-    } catch (error) {
-      if (error.response) {
-        alert(error.response.data.message); // Error from backend
-      } else {
-        alert("An error occurred. Please try again later.");
-      }
-    }
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/sign/signin`,
+      formData
+    );
 
-    setFormData({ email: "", password: "" });
-  };
+    alert(response.data.message);
+    navigate("/home");
+  } catch (error) {
+    if (error.response) {
+      alert(error.response.data.message);
+    } else {
+      alert("An error occurred. Please try again later.");
+    }
+  }
+
+  setFormData({ email: "", password: "" });
+};
+
 
   return (
     <div

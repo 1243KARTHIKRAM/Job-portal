@@ -14,45 +14,46 @@ const Post = ({ setJobs, setInternships }) => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    const postData = {
-      title,
-      company,
-      location,
-      description,
-      skills: skills.split(",").map(skill => skill.trim()), // Convert skills to array
-      role: postType === "job" ? "Job" : "Internship",
-    };
-
-    try {
-      const response = await axios.post("http://localhost:5000/api/posts/create", postData);
-      
-      if (response.status === 201) {
-        alert("Post created successfully!");
-
-        // Update frontend state (optional)
-        if (postType === "job") {
-          setJobs((prevJobs) => [...prevJobs, response.data.post]);
-        } else {
-          setInternships((prevInternships) => [...prevInternships, response.data.post]);
-        }
-
-        // Reset form
-        setTitle("");
-        setCompany("");
-        setLocation("");
-        setDescription("");
-        setSkills("");
-      }
-    } catch (error) {
-      setError("Error posting data. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  const postData = {
+    title,
+    company,
+    location,
+    description,
+    skills: skills.split(",").map(skill => skill.trim()),
+    role: postType === "job" ? "Job" : "Internship",
   };
+
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/posts/create`,
+      postData
+    );
+
+    if (response.status === 201) {
+      alert("Post created successfully!");
+
+      if (postType === "job") {
+        setJobs((prevJobs) => [...prevJobs, response.data.post]);
+      } else {
+        setInternships((prevInternships) => [...prevInternships, response.data.post]);
+      }
+
+      setTitle("");
+      setCompany("");
+      setLocation("");
+      setDescription("");
+      setSkills("");
+    }
+  } catch (error) {
+    setError("Error posting data. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="container my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
